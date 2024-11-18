@@ -14,7 +14,7 @@
         <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900 opacity-50 z-20 hidden lg:hidden"></div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed lg:static bg-gradient-to-b from-blue-800 to-blue-900 text-white w-72 min-h-screen flex-shrink-0 transition-all duration-300 shadow-xl z-30 transform lg:transform-none">
+        <aside id="sidebar" class="fixed lg:static bg-gradient-to-b from-blue-800 to-blue-900 text-white w-72 min-h-screen flex-shrink-0 transition-all duration-300 shadow-xl z-30 -ml-72 lg:ml-0">
             <div class="p-6 border-b border-blue-700">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-shield-alt text-2xl"></i>
@@ -166,51 +166,42 @@
             function isMobile() {
                 return window.innerWidth < 1024;
             }
-    
-            // Toggle sidebar
+
+            // Toggle sidebar con overlay para móvil
             $('#toggle-sidebar').click(function() {
-                if (isMobile()) {
-                    // Comportamiento para móvil
-                    $('#sidebar').toggleClass('-translate-x-full translate-x-0');
-                    $('#sidebar-overlay').toggleClass('hidden');
-                } else {
-                    // Comportamiento para desktop
-                    $('#sidebar').toggleClass('-translate-x-full');
-                    $('.flex-1').toggleClass('lg:ml-0 lg:ml-72');
-                }
+                $('#sidebar').toggleClass('-ml-72 ml-0');
+                $('#sidebar-overlay').toggleClass('hidden');
                 $('#toggle-sidebar i').toggleClass('fa-bars fa-times');
             });
-    
-            // Cerrar sidebar al hacer click en el overlay (solo móvil)
+
+            // Cerrar sidebar al hacer click en el overlay
             $('#sidebar-overlay').click(function() {
-                $('#sidebar').removeClass('translate-x-0').addClass('-translate-x-full');
+                $('#sidebar').addClass('-ml-72').removeClass('ml-0');
                 $('#sidebar-overlay').addClass('hidden');
                 $('#toggle-sidebar i').addClass('fa-bars').removeClass('fa-times');
             });
-    
+
             // Manejar resize de la ventana
             $(window).resize(function() {
                 if (!isMobile()) {
-                    $('#sidebar').removeClass('-translate-x-full translate-x-0');
+                    $('#sidebar').removeClass('-ml-72');
                     $('#sidebar-overlay').addClass('hidden');
-                    $('.flex-1').removeClass('lg:ml-0');
                 } else {
-                    $('#sidebar').addClass('-translate-x-full');
-                    $('.flex-1').removeClass('lg:ml-72');
+                    $('#sidebar').addClass('-ml-72');
                 }
             });
-    
-            // Configuración inicial
+
+            // Cerrar sidebar por defecto en móvil al cargar
             if (isMobile()) {
-                $('#sidebar').addClass('-translate-x-full');
+                $('#sidebar').addClass('-ml-72');
             }
-    
+
             // Toggle dropdown menu
             $('#user-menu').click(function(e) {
                 e.stopPropagation();
                 $('#dropdown-menu').toggleClass('hidden');
             });
-    
+
             // Cerrar dropdown al hacer click fuera
             $(document).click(function() {
                 $('#dropdown-menu').addClass('hidden');
