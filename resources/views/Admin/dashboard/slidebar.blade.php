@@ -43,6 +43,8 @@
 
 
 <script>
+    
+
     $('.loadContent').click(function(e) {
         e.preventDefault();
         const section = $(this).data('section');

@@ -7,10 +7,10 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', function () {
-    return view('Admin.dashboard.dashboard');
+    return view('Admin.dashboard.dashboard', [
+        'contenido' => 'Admin.principal.principal',
+    ]);
 });
-
-
 
 Route::get('/contenido/{seccion}', function ($seccion) {
     $vistas = [
@@ -18,9 +18,5 @@ Route::get('/contenido/{seccion}', function ($seccion) {
         'clientes' => 'Admin.clientes.clientes',
     ];
 
-    if (array_key_exists($seccion, $vistas)) {
-        return view($vistas[$seccion]);
-    }
-
-    return response()->json(['error' => 'Sección no encontrada'], 404);
+    return isset($vistas[$seccion]) ? view($vistas[$seccion]) : response()->json(['error' => 'Sección no encontrada'], 404);
 });
