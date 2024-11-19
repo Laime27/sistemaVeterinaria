@@ -1,212 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Administrativo</title>
+    <title>Dashboard Admin</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-gray-50">
-    <div class="min-h-screen relative lg:flex">
-        <!-- Overlay para móvil -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900 opacity-50 z-20 hidden lg:hidden"></div>
 
-        <!-- Sidebar -->
-        <aside id="sidebar" class="fixed lg:static bg-gradient-to-b from-blue-800 to-blue-900 text-white w-72 min-h-screen flex-shrink-0 transition-all duration-300 shadow-xl z-30 -ml-72 lg:ml-0">
-            <div class="p-6 border-b border-blue-700">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-shield-alt text-2xl"></i>
-                    <h2 class="text-2xl font-bold">Admin Panel</h2>
-                </div>
-            </div>
-            <nav class="mt-6 px-4">
-                <div class="space-y-3">
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-home text-lg w-6"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-users text-lg w-6"></i>
-                        <span>Usuarios</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-shopping-cart text-lg w-6"></i>
-                        <span>Productos</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-chart-bar text-lg w-6"></i>
-                        <span>Estadísticas</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-cog text-lg w-6"></i>
-                        <span>Configuración</span>
-                    </a>
-                </div>
-            </nav>
-        </aside>
+<body>
+    <div class="min-h-screen bg-gray-100">
+        <!-- Sidebar móvil y escritorio -->
+        @include('Admin.dashboard.cabecera')
 
-        <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col min-h-screen transition-all duration-300">
-            <!-- Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200">
-                <div class="flex justify-between items-center px-6 py-4">
-                    <!-- Botón toggle sidebar -->
-                    <button id="toggle-sidebar" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <i class="fas fa-bars text-gray-600 text-xl"></i>
+        <div class="lg:ml-64 p-4">
+
+            <header class="bg-white shadow-sm mb-4 p-4">
+                <div class="flex justify-between lg:justify-end items-center">
+                    <button class="lg:hidden text-gray-600 focus:outline-none" id="openSidebar">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 focus:outline-none" id="profileButton">
+                            <svg class="h-8 w-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="text-gray-700">Admin User</span>
+                            <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
 
-                    <!-- Menú de usuario -->
-                    <div class="flex items-center space-x-4">
-                        <!-- Notificaciones -->
-                        <button class="p-2 rounded-lg hover:bg-gray-100 relative">
-                            <i class="far fa-bell text-gray-600 text-xl"></i>
-                            <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">3</span>
-                        </button>
-                        <!-- Mensajes -->
-                        <button class="p-2 rounded-lg hover:bg-gray-100 relative">
-                            <i class="far fa-envelope text-gray-600 text-xl"></i>
-                            <span class="absolute top-0 right-0 bg-blue-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">5</span>
-                        </button>
-                        <!-- Usuario -->
-                        <div class="relative">
-                            <button id="user-menu" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100">
-                                <img src="https://ui-avatars.com/api/?name=Admin+User" alt="Usuario" class="w-10 h-10 rounded-full border-2 border-blue-500">
-                                <div class="text-left hidden sm:block">
-                                    <div class="text-sm font-semibold text-gray-700">Admin User</div>
-                                    <div class="text-xs text-gray-500">admin@ejemplo.com</div>
-                                </div>
-                                <i class="fas fa-chevron-down text-gray-600 ml-2"></i>
-                            </button>
-                            <!-- Menú desplegable -->
-                            <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-200">
-                                <a href="#" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-user w-5"></i>
-                                    <span>Mi Perfil</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-cog w-5"></i>
-                                    <span>Configuración</span>
-                                </a>
-                                <hr class="my-2 border-gray-200">
-                                <a href="#" class="flex items-center space-x-3 px-4 py-2 text-red-600 hover:bg-red-50">
-                                    <i class="fas fa-sign-out-alt w-5"></i>
-                                    <span>Cerrar Sesión</span>
-                                </a>
-                            </div>
+                        <!-- Menú desplegable -->
+                        <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                            id="profileMenu">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi
+                                Perfil</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cerrar
+                                Sesión</a>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Contenido del dashboard -->
-            <main class="flex-1 p-6 bg-gray-50">
-                <div class="max-w-7xl mx-auto">
-                    <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h1>
-                    
-                    <!-- Tarjetas de estadísticas -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Usuarios Totales</p>
-                                    <h3 class="text-2xl font-bold text-gray-800">2,451</h3>
-                                </div>
-                                <div class="bg-blue-100 p-3 rounded-lg">
-                                    <i class="fas fa-users text-blue-500 text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Ventas del Mes</p>
-                                    <h3 class="text-2xl font-bold text-gray-800">$12,345</h3>
-                                </div>
-                                <div class="bg-green-100 p-3 rounded-lg">
-                                    <i class="fas fa-dollar-sign text-green-500 text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Productos Activos</p>
-                                    <h3 class="text-2xl font-bold text-gray-800">845</h3>
-                                </div>
-                                <div class="bg-purple-100 p-3 rounded-lg">
-                                    <i class="fas fa-box text-purple-500 text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Pedidos Pendientes</p>
-                                    <h3 class="text-2xl font-bold text-gray-800">12</h3>
-                                </div>
-                                <div class="bg-yellow-100 p-3 rounded-lg">
-                                    <i class="fas fa-clock text-yellow-500 text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="content-sections">
+                <div id="dashboard-section" class="content-section">
+
                 </div>
-            </main>
+            </div>
+
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
-            // Verificar si es móvil
-            function isMobile() {
-                return window.innerWidth < 1024;
-            }
 
-            // Toggle sidebar con overlay para móvil
-            $('#toggle-sidebar').click(function() {
-                $('#sidebar').toggleClass('-ml-72 ml-0');
-                $('#sidebar-overlay').toggleClass('hidden');
-                $('#toggle-sidebar i').toggleClass('fa-bars fa-times');
+
+
+            $('#openSidebar').click(function() {
+                $('#sidebar').removeClass('-translate-x-full');
             });
 
-            // Cerrar sidebar al hacer click en el overlay
-            $('#sidebar-overlay').click(function() {
-                $('#sidebar').addClass('-ml-72').removeClass('ml-0');
-                $('#sidebar-overlay').addClass('hidden');
-                $('#toggle-sidebar i').addClass('fa-bars').removeClass('fa-times');
+            $('#closeSidebar').click(function() {
+                $('#sidebar').addClass('-translate-x-full');
+            });
+            $('#profileButton').click(function(e) {
+                e.stopPropagation();
+                $('#profileMenu').toggleClass('hidden');
             });
 
-            // Manejar resize de la ventana
-            $(window).resize(function() {
-                if (!isMobile()) {
-                    $('#sidebar').removeClass('-ml-72');
-                    $('#sidebar-overlay').addClass('hidden');
-                } else {
-                    $('#sidebar').addClass('-ml-72');
+            $(document).click(function(e) {
+                if (!$(e.target).closest('#profileMenu, #profileButton').length) {
+                    $('#profileMenu').addClass('hidden');
                 }
             });
 
-            // Cerrar sidebar por defecto en móvil al cargar
-            if (isMobile()) {
-                $('#sidebar').addClass('-ml-72');
-            }
-
-            // Toggle dropdown menu
-            $('#user-menu').click(function(e) {
-                e.stopPropagation();
-                $('#dropdown-menu').toggleClass('hidden');
-            });
-
-            // Cerrar dropdown al hacer click fuera
-            $(document).click(function() {
-                $('#dropdown-menu').addClass('hidden');
+            $(document).click(function(event) {
+                if (!$(event.target).closest('#sidebar, #openSidebar').length) {
+                    if (!$('#sidebar').hasClass('-translate-x-full') && $(window).width() < 1024) {
+                        $('#sidebar').addClass('-translate-x-full');
+                    }
+                }
             });
         });
     </script>
 </body>
+
 </html>
