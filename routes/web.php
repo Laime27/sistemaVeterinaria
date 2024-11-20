@@ -1,22 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\login\LoginController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/admin', function () {
-    return view('Admin.dashboard.dashboard', [
-        'contenido' => 'Admin.principal.principal',
-    ]);
+    return view('Admin.login.login');
 });
 
-Route::get('/contenido/{seccion}', function ($seccion) {
-    $vistas = [
-        'principal' => 'Admin.principal.principal',
-        'clientes' => 'Admin.clientes.clientes',
-    ];
 
-    return isset($vistas[$seccion]) ? view($vistas[$seccion]) : response()->json(['error' => 'Sección no encontrada'], 404);
+Route::post('/admin/login', [LoginController::class, 'login']);
+
+
+Route::middleware('auth')->group(function () {
+
+    
+    Route::get('/admin/principal', function () {
+        return view('admin.principal.principal');
+    })->name('admin.principal');
+    
+    Route::get('/admin/clientes', function () {
+        return view('admin.clientes.clientes');
+    })->name('admin.clientes');
+    
+    
+    
 });

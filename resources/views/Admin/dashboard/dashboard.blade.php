@@ -21,9 +21,9 @@
             @include('Admin.dashboard.header')  
 
             <div class="content-sections">
-                <div id="dashboard-section" class="content-section">
-                    @include($contenido) 
-                </div>      
+                <div id="content">
+                    @yield('content')
+                </div>     
             </div>
 
         </div>
