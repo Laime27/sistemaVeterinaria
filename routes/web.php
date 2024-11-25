@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\login\LoginController;
-
+use App\Http\Controllers\Admin\Servicio\ServicioController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,5 +37,6 @@ Route::middleware('auth')->group(function () {
     })->name('admin.servicios');
 
 
-    
+    Route::post('servicios/listar', [ServicioController::class, 'listarServicios']);
+    Route::resource('servicios', ServicioController::class);
 });
